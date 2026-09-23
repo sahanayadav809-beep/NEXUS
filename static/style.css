@@ -1,0 +1,875 @@
+/* ==========================================
+   NEXUS - MAIN STYLE
+   ANIMAL PRINT / LEOPARD THEME
+========================================== */
+
+
+/* ==========================================
+   RESET
+========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* ==========================================
+   BODY
+   DARK LEOPARD / CHEETAH ANIMAL PRINT
+========================================== */
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: #ffffff;
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    background-color: #10050d;
+
+    /*
+       The SVG below creates irregular
+       leopard-style broken rosettes.
+    */
+
+    background-image:
+
+        /* Pink glow */
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(255, 35, 130, 0.20),
+            transparent 25%
+        ),
+
+        /* Purple glow */
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(170, 50, 200, 0.18),
+            transparent 28%
+        ),
+
+        /* Bottom glow */
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(220, 25, 130, 0.12),
+            transparent 35%
+        ),
+
+        /* Leopard print */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='420' viewBox='0 0 500 420'%3E%3Crect width='500' height='420' fill='%2310060d'/%3E%3Cg fill='none' stroke='%236d1c48' stroke-width='9' opacity='.95'%3E%3Cpath d='M25 55 C35 28 78 18 105 39 C124 54 116 82 91 91 C67 101 36 91 30 71 C25 57 39 45 55 46 C72 47 82 59 75 70'/%3E%3Cpath d='M170 30 C191 7 232 15 244 40 C254 61 240 84 216 89 C190 94 166 82 164 62 C162 47 176 36 191 38 C207 40 215 51 209 63'/%3E%3Cpath d='M330 48 C348 20 390 22 410 43 C428 62 416 89 390 98 C364 107 335 94 330 73 C326 58 340 47 356 49 C373 51 382 62 375 74'/%3E%3Cpath d='M430 150 C446 128 480 130 493 150 C504 167 494 190 473 197 C452 204 429 193 426 176 C424 164 435 155 448 157 C461 159 468 168 463 178'/%3E%3Cpath d='M70 150 C88 123 128 126 144 149 C158 169 148 194 124 202 C100 210 73 197 69 177 C66 163 79 152 94 154 C110 156 117 168 111 180'/%3E%3Cpath d='M235 130 C252 104 293 108 307 131 C319 151 309 176 285 184 C261 191 237 179 234 159 C232 145 245 135 260 137 C276 139 283 150 277 162'/%3E%3Cpath d='M350 245 C369 217 409 220 425 243 C439 263 429 288 404 297 C379 306 353 293 349 273 C346 258 360 247 376 249 C392 251 399 263 393 275'/%3E%3Cpath d='M20 270 C39 242 78 245 94 268 C108 288 98 314 74 322 C50 330 24 317 20 297 C17 283 30 272 45 274 C61 276 68 288 62 300'/%3E%3Cpath d='M170 245 C187 219 225 223 240 245 C252 264 243 289 220 297 C197 305 173 293 169 274 C166 260 179 250 194 252 C209 254 216 265 210 277'/%3E%3Cpath d='M275 350 C292 324 331 327 345 350 C357 370 347 394 324 402 C301 410 278 397 274 378 C271 364 284 354 299 356 C314 358 321 369 315 380'/%3E%3Cpath d='M445 335 C459 315 490 318 501 337 C510 353 501 373 484 379 C467 385 449 376 446 362 C444 351 454 342 465 344 C477 346 483 354 479 363'/%3E%3C/g%3E%3Cg fill='%23030105'%3E%3Cpath d='M47 51 C58 39 79 42 82 55 C85 67 70 77 58 72 C48 68 42 58 47 51Z'/%3E%3Cpath d='M184 39 C195 27 216 30 219 42 C222 54 207 64 196 59 C186 55 180 45 184 39Z'/%3E%3Cpath d='M345 54 C356 42 377 45 380 57 C383 69 368 79 357 74 C347 70 341 60 345 54Z'/%3E%3Cpath d='M445 161 C455 150 472 153 475 163 C478 174 466 182 456 178 C447 175 442 168 445 161Z'/%3E%3Cpath d='M84 160 C95 148 115 151 118 163 C121 175 107 184 96 179 C87 175 81 167 84 160Z'/%3E%3Cpath d='M249 140 C260 128 280 131 283 143 C286 155 272 164 261 159 C252 155 246 147 249 140Z'/%3E%3Cpath d='M363 255 C375 242 395 245 398 257 C401 269 387 278 376 273 C366 269 360 261 363 255Z'/%3E%3Cpath d='M35 280 C46 267 66 270 69 282 C72 294 58 303 47 298 C38 294 32 286 35 280Z'/%3E%3Cpath d='M184 256 C195 244 215 247 218 259 C221 271 207 280 196 275 C187 271 181 263 184 256Z'/%3E%3Cpath d='M289 361 C300 349 320 352 323 364 C326 376 312 385 301 380 C292 376 286 368 289 361Z'/%3E%3C/g%3E%3Cg fill='%23a52a69' opacity='.32'%3E%3Cellipse cx='135' cy='75' rx='10' ry='6'/%3E%3Cellipse cx='280' cy='55' rx='11' ry='7'/%3E%3Cellipse cx='455' cy='80' rx='9' ry='6'/%3E%3Cellipse cx='160' cy='210' rx='10' ry='6'/%3E%3Cellipse cx='320' cy='185' rx='11' ry='7'/%3E%3Cellipse cx='120' cy='350' rx='10' ry='6'/%3E%3Cellipse cx='430' cy='300' rx='10' ry='6'/%3E%3C/g%3E%3C/svg%3E");
+
+    background-size:
+        auto,
+        auto,
+        auto,
+        500px 420px;
+
+    background-position:
+        center,
+        center,
+        center,
+        center;
+
+    background-attachment:
+        fixed;
+}
+
+
+/* ==========================================
+   NAVIGATION BAR
+========================================== */
+
+.navbar {
+
+    width: 100%;
+
+    min-height: 70px;
+
+    padding:
+        15px 30px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+    background:
+        rgba(12, 6, 12, 0.95);
+
+    border-bottom:
+        1px solid
+        rgba(255, 75, 165, 0.28);
+
+    position:
+        sticky;
+
+    top:
+        0;
+
+    z-index:
+        1000;
+
+    backdrop-filter:
+        blur(12px);
+}
+
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.logo {
+
+    font-size:
+        24px;
+
+    font-weight:
+        800;
+
+    color:
+        #ffffff;
+
+    white-space:
+        nowrap;
+}
+
+
+/* ==========================================
+   NAVIGATION LINKS
+========================================== */
+
+.navbar nav {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        flex-end;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+}
+
+
+.navbar nav a {
+
+    color:
+        #e4cbdc;
+
+    text-decoration:
+        none;
+
+    padding:
+        9px 12px;
+
+    border-radius:
+        9px;
+
+    font-size:
+        14px;
+
+    transition:
+        0.25s ease;
+}
+
+
+.navbar nav a:hover {
+
+    color:
+        #ffffff;
+
+    background:
+        rgba(255, 63, 159, 0.18);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.container {
+
+    width:
+        100%;
+
+    max-width:
+        1400px;
+
+    margin:
+        0 auto;
+
+    padding:
+        35px 30px 60px;
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.hero {
+
+    width:
+        100%;
+
+    padding:
+        45px 35px;
+
+    margin-bottom:
+        30px;
+
+    border-radius:
+        22px;
+
+    background:
+        rgba(31, 7, 25, 0.88);
+
+    border:
+        1px solid
+        rgba(255, 75, 165, 0.30);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.35);
+}
+
+
+.hero h1 {
+
+    font-size:
+        42px;
+
+    margin-bottom:
+        12px;
+}
+
+
+.hero h2 {
+
+    font-size:
+        28px;
+
+    margin-bottom:
+        12px;
+}
+
+
+.hero p {
+
+    color:
+        #e4c9db;
+
+    font-size:
+        17px;
+
+    line-height:
+        1.7;
+
+    margin-bottom:
+        8px;
+}
+
+
+/* ==========================================
+   SECTIONS
+========================================== */
+
+section {
+
+    width:
+        100%;
+
+    margin-bottom:
+        35px;
+}
+
+
+section > h2 {
+
+    font-size:
+        25px;
+
+    margin-bottom:
+        18px;
+}
+
+
+/* ==========================================
+   CARDS CONTAINER
+========================================== */
+
+.cards {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(250px, 1fr)
+        );
+
+    gap:
+        18px;
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.card {
+
+    width:
+        100%;
+
+    min-width:
+        0;
+
+    padding:
+        22px;
+
+    border-radius:
+        18px;
+
+    background:
+        rgba(23, 8, 20, 0.94);
+
+    border:
+        1px solid
+        rgba(255, 75, 165, 0.22);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 0, 0, 0.30);
+
+    transition:
+        0.25s ease;
+}
+
+
+.card:hover {
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(255, 75, 165, 0.50);
+
+    box-shadow:
+        0 15px 30px
+        rgba(0, 0, 0, 0.40);
+}
+
+
+.card h2 {
+
+    font-size:
+        22px;
+
+    margin-bottom:
+        12px;
+}
+
+
+.card h3 {
+
+    font-size:
+        19px;
+
+    margin-bottom:
+        12px;
+}
+
+
+.card p {
+
+    color:
+        #d3b9cc;
+
+    line-height:
+        1.6;
+
+    margin-bottom:
+        8px;
+}
+
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+.button {
+
+    display:
+        inline-block;
+
+    margin-top:
+        10px;
+
+    padding:
+        11px 18px;
+
+    border-radius:
+        10px;
+
+    text-decoration:
+        none;
+
+    color:
+        #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff3b9d,
+            #b348ff
+        );
+
+    font-weight:
+        600;
+
+    transition:
+        0.25s ease;
+}
+
+
+.button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(255, 63, 159, 0.38);
+}
+
+
+/* ==========================================
+   LINKS
+========================================== */
+
+a {
+
+    color:
+        #ff75bd;
+}
+
+
+a:hover {
+
+    color:
+        #ffc3e2;
+}
+
+
+/* ==========================================
+   FORMS
+========================================== */
+
+form {
+
+    width:
+        100%;
+}
+
+
+input,
+select,
+textarea {
+
+    width:
+        100%;
+
+    padding:
+        12px 14px;
+
+    margin-bottom:
+        14px;
+
+    border:
+        1px solid
+        rgba(255, 75, 165, 0.25);
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(10, 4, 10, 0.95);
+
+    color:
+        #ffffff;
+
+    outline:
+        none;
+}
+
+
+input::placeholder,
+textarea::placeholder {
+
+    color:
+        #907689;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+
+    border-color:
+        #ff5bad;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 90, 170, 0.12);
+}
+
+
+textarea {
+
+    min-height:
+        140px;
+
+    resize:
+        vertical;
+}
+
+
+label {
+
+    display:
+        block;
+
+    margin-bottom:
+        7px;
+
+    color:
+        #ead8e5;
+
+    font-weight:
+        600;
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+    background:
+        rgba(23, 8, 20, 0.94);
+
+    border-radius:
+        14px;
+
+    overflow:
+        hidden;
+}
+
+
+th,
+td {
+
+    padding:
+        14px;
+
+    text-align:
+        left;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+}
+
+
+th {
+
+    color:
+        #ffffff;
+
+    background:
+        rgba(255, 63, 159, 0.12);
+}
+
+
+td {
+
+    color:
+        #d4bfd0;
+}
+
+
+/* ==========================================
+   BADGES
+========================================== */
+
+.badge {
+
+    display:
+        inline-block;
+
+    padding:
+        5px 10px;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(255, 63, 159, 0.18);
+
+    color:
+        #ffd9ed;
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+}
+
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty-state {
+
+    text-align:
+        center;
+
+    padding:
+        50px 25px;
+}
+
+
+/* ==========================================
+   BUTTON GROUP
+========================================== */
+
+.button-group {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    justify-content:
+        center;
+
+    gap:
+        12px;
+
+    margin-top:
+        20px;
+}
+
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar {
+
+    width:
+        9px;
+}
+
+
+::-webkit-scrollbar-track {
+
+    background:
+        #080408;
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        linear-gradient(
+            #671b4b,
+            #d33791
+        );
+
+    border-radius:
+        20px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background:
+        linear-gradient(
+            #902967,
+            #f04aa8
+        );
+}
+
+
+/* ==========================================
+   SELECTION
+========================================== */
+
+::selection {
+
+    background:
+        rgba(255, 63, 159, 0.35);
+
+    color:
+        #ffffff;
+}
+
+
+/* ==========================================
+   MOBILE / TABLET
+========================================== */
+
+@media (max-width: 1000px) {
+
+    .navbar {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+    }
+
+
+    .navbar nav {
+
+        justify-content:
+            flex-start;
+
+        width:
+            100%;
+    }
+
+
+    .container {
+
+        padding:
+            25px 20px 50px;
+    }
+
+
+    .hero h1 {
+
+        font-size:
+            34px;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .navbar {
+
+        padding:
+            14px 18px;
+    }
+
+
+    .logo {
+
+        font-size:
+            21px;
+    }
+
+
+    .navbar nav a {
+
+        font-size:
+            13px;
+
+        padding:
+            7px 9px;
+    }
+
+
+    .container {
+
+        padding:
+            20px 15px 40px;
+    }
+
+
+    .hero {
+
+        padding:
+            30px 22px;
+    }
+
+
+    .hero h1 {
+
+        font-size:
+            30px;
+    }
+
+
+    .hero p {
+
+        font-size:
+            15px;
+    }
+
+
+    .cards {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .card {
+
+        padding:
+            18px;
+    }
+
+}

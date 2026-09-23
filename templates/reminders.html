@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS - Reminders</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .reminder-card {
+            border-left: 5px solid #7c83ff;
+        }
+
+        .action-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+        🧠 NEXUS
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/timetable">
+            📅 Timetable
+        </a>
+
+        <a href="/assignments">
+            📝 Assignments
+        </a>
+
+        <a href="/presentations">
+            🎤 Presentations
+        </a>
+
+        <a href="/chaos">
+            🧠 Drop Your Chaos
+        </a>
+
+        <a href="/reminders">
+            🔔 Reminders
+        </a>
+
+        <a href="/conflicts">
+            ⚠️ Conflicts
+        </a>
+
+        <a href="/schedule">
+            📚 Study Schedule
+        </a>
+
+        <a href="/daily-plan">
+            🤖 Daily Plan
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="container">
+
+
+    <section class="hero">
+
+        <h1>
+            🔔 Reminders
+        </h1>
+
+        <p>
+            Keep track of your upcoming academic
+            deadlines and presentations.
+        </p>
+
+    </section>
+
+
+
+    <!-- ======================================
+         ASSIGNMENT REMINDERS
+    ======================================= -->
+
+    <section>
+
+        <h2>
+            📝 Assignment Reminders
+        </h2>
+
+
+        {% if assignments %}
+
+
+        <div class="cards">
+
+
+            {% for assignment in assignments %}
+
+
+            <div class="card reminder-card">
+
+
+                <h3>
+                    📝 {{ assignment.title }}
+                </h3>
+
+
+                <p>
+                    📚 Subject:
+                    {{ assignment.subject }}
+                </p>
+
+
+                <p>
+                    📅 Deadline:
+                    {{ assignment.deadline }}
+                </p>
+
+
+                <p>
+                    ⏱️ Estimated Time:
+                    {{ assignment.estimated_hours }}
+                    hour(s)
+                </p>
+
+
+                <p>
+                    🎯 Importance:
+                    {{ assignment.importance }}
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="card empty-state">
+
+            <h3>
+                📭 No Assignment Reminders
+            </h3>
+
+            <p>
+                You haven't added any assignments yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+        <br>
+
+
+        <a href="/assignments"
+           class="button">
+
+            ➕ Add Assignment
+
+        </a>
+
+    </section>
+
+
+
+    <!-- ======================================
+         PRESENTATION REMINDERS
+    ======================================= -->
+
+    <section>
+
+        <h2>
+            🎤 Presentation Reminders
+        </h2>
+
+
+        {% if presentations %}
+
+
+        <div class="cards">
+
+
+            {% for presentation in presentations %}
+
+
+            <div class="card reminder-card">
+
+
+                <h3>
+                    🎤 {{ presentation.topic }}
+                </h3>
+
+
+                <p>
+                    📚 Subject:
+                    {{ presentation.subject }}
+                </p>
+
+
+                <p>
+                    📅 Presentation Date:
+                    {{ presentation.presentation_date }}
+                </p>
+
+
+                <p>
+                    ⏱️ Preparation Time:
+                    {{ presentation.preparation_hours }}
+                    hour(s)
+                </p>
+
+
+                <p>
+                    🎯 Importance:
+                    {{ presentation.importance }}
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="card empty-state">
+
+            <h3>
+                📭 No Presentation Reminders
+            </h3>
+
+            <p>
+                You haven't added any presentations yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+        <br>
+
+
+        <a href="/presentations"
+           class="button">
+
+            ➕ Add Presentation
+
+        </a>
+
+    </section>
+
+
+
+    <!-- ======================================
+         QUICK ACTIONS
+    ======================================= -->
+
+    <section class="card">
+
+        <h2>
+            ⚡ Quick Actions
+        </h2>
+
+
+        <p>
+            Use NEXUS to organize your workload.
+        </p>
+
+
+        <br>
+
+
+        <div class="action-area">
+
+
+            <a href="/daily-plan"
+               class="button">
+
+                🤖 View Daily Plan
+
+            </a>
+
+
+            <a href="/schedule"
+               class="button">
+
+                📚 View Study Schedule
+
+            </a>
+
+
+            <a href="/conflicts"
+               class="button">
+
+                ⚠️ Check Conflicts
+
+            </a>
+
+
+            <a href="/chaos"
+               class="button">
+
+                🧠 Drop Your Chaos
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         BACK TO DASHBOARD
+    ======================================= -->
+
+    <a href="/"
+       class="button">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</main>
+
+
+</body>
+
+</html>

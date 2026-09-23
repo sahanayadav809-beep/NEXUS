@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS - Conflicts</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .conflict-page {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .conflict-card {
+            border-left: 5px solid #ff5757;
+        }
+
+        .success-card {
+            border-left: 5px solid #45d483;
+        }
+
+        .action-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+        🧠 NEXUS
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/timetable">
+            📅 Timetable
+        </a>
+
+        <a href="/assignments">
+            📝 Assignments
+        </a>
+
+        <a href="/presentations">
+            🎤 Presentations
+        </a>
+
+        <a href="/chaos">
+            🧠 Drop Your Chaos
+        </a>
+
+        <a href="/reminders">
+            🔔 Reminders
+        </a>
+
+        <a href="/conflicts">
+            ⚠️ Conflicts
+        </a>
+
+        <a href="/schedule">
+            📚 Study Schedule
+        </a>
+
+        <a href="/daily-plan">
+            🤖 Daily Plan
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="container conflict-page">
+
+
+    <section class="hero">
+
+        <h1>
+            ⚠️ Academic Conflicts
+        </h1>
+
+        <p>
+            NEXUS analyzes your assignments and
+            presentations to identify deadline
+            conflicts and heavy workloads.
+        </p>
+
+    </section>
+
+
+
+    <!-- ======================================
+         CONFLICT RESULTS
+    ======================================= -->
+
+    {% if conflicts %}
+
+
+    <section>
+
+        <h2>
+            🚨 Conflicts Detected
+        </h2>
+
+
+        <div class="cards">
+
+
+            {% for conflict in conflicts %}
+
+
+            <div class="card conflict-card">
+
+
+                <h3>
+                    ⚠️ {{ conflict.type }}
+                </h3>
+
+
+                <p>
+                    {{ conflict.message }}
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+
+    {% else %}
+
+
+    <section class="card success-card">
+
+        <h2>
+            ✅ No Conflicts Detected
+        </h2>
+
+
+        <p>
+            NEXUS has checked your current
+            assignments and presentations and
+            did not find any academic conflicts.
+        </p>
+
+
+    </section>
+
+
+    {% endif %}
+
+
+
+    <!-- ======================================
+         WHAT NEXT?
+    ======================================= -->
+
+    <section class="card">
+
+        <h2>
+            ⚡ Manage Your Work
+        </h2>
+
+
+        <p>
+            Add more academic information or
+            check your study plan.
+        </p>
+
+
+        <br>
+
+
+        <div class="action-area">
+
+
+            <a href="/assignments"
+               class="button">
+
+                📝 Add Assignment
+
+            </a>
+
+
+            <a href="/presentations"
+               class="button">
+
+                🎤 Add Presentation
+
+            </a>
+
+
+            <a href="/timetable"
+               class="button">
+
+                📅 Manage Timetable
+
+            </a>
+
+
+            <a href="/schedule"
+               class="button">
+
+                📚 Study Schedule
+
+            </a>
+
+
+            <a href="/daily-plan"
+               class="button">
+
+                🤖 Daily Plan
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <a href="/"
+       class="button">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</main>
+
+
+</body>
+
+</html>

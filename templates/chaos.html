@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS - Drop Your Chaos</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .chaos-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .chaos-input-box {
+            margin-bottom: 30px;
+        }
+
+        .chaos-textarea {
+            min-height: 180px;
+            resize: vertical;
+            font-size: 16px;
+        }
+
+        .section-title {
+            margin-top: 35px;
+            margin-bottom: 18px;
+        }
+
+        .result-card {
+            margin-bottom: 15px;
+        }
+
+        .conflict-card {
+            border-left: 5px solid #ff5757;
+        }
+
+        .priority-card {
+            border-left: 5px solid #8b7cff;
+        }
+
+        .action-card {
+            border-left: 5px solid #45d483;
+        }
+
+        .data-card {
+            border-left: 5px solid #42a5f5;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+        🧠 NEXUS
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/timetable">
+            📅 Timetable
+        </a>
+
+        <a href="/assignments">
+            📝 Assignments
+        </a>
+
+        <a href="/presentations">
+            🎤 Presentations
+        </a>
+
+        <a href="/chaos">
+            🧠 Drop Your Chaos
+        </a>
+
+        <a href="/reminders">
+            🔔 Reminders
+        </a>
+
+        <a href="/conflicts">
+            ⚠️ Conflicts
+        </a>
+
+        <a href="/schedule">
+            📚 Study Schedule
+        </a>
+
+        <a href="/daily-plan">
+            🤖 Daily Plan
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="container chaos-container">
+
+
+    <!-- ======================================
+         HERO
+    ======================================= -->
+
+    <section class="hero">
+
+        <h1>
+            🧠 Drop Your Chaos
+        </h1>
+
+        <p>
+            Tell NEXUS everything you need to
+            manage. The AI agent will understand,
+            analyze, detect conflicts, prioritize
+            and create an action plan.
+        </p>
+
+    </section>
+
+
+
+    <!-- ======================================
+         CHAOS INPUT
+    ======================================= -->
+
+    <section class="card chaos-input-box">
+
+        <h2>
+            ✍️ What is going on?
+        </h2>
+
+        <p>
+            Write your academic problems, tasks,
+            deadlines or anything you need help
+            organizing.
+        </p>
+
+        <br>
+
+
+        <form method="POST">
+
+
+            <label>
+                Your Chaos
+            </label>
+
+
+            <textarea
+                name="chaos_text"
+                class="chaos-textarea"
+                placeholder="Example: I have a DBMS assignment due Friday, an AI presentation on Saturday, and classes from 9 AM to 4 PM. I also need to prepare for my Python test."
+                required
+            ></textarea>
+
+
+            <button
+                type="submit"
+                class="button"
+            >
+                🤖 Analyze My Chaos
+            </button>
+
+
+        </form>
+
+    </section>
+
+
+
+    {% if result %}
+
+
+    <!-- ======================================
+         AI UNDERSTANDING
+    ======================================= -->
+
+    <section>
+
+        <h2 class="section-title">
+            🧠 AI Understanding
+        </h2>
+
+
+        <div class="card">
+
+            <p>
+                NEXUS has understood your input and
+                combined it with your saved academic
+                information.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         ASSIGNMENTS FOUND
+    ======================================= -->
+
+    {% if result.assignments %}
+
+    <section>
+
+        <h2 class="section-title">
+            📝 Assignments Identified
+        </h2>
+
+
+        <div class="cards">
+
+
+            {% for assignment in result.assignments %}
+
+
+            <div class="card data-card">
+
+
+                <h3>
+                    📝 {{ assignment.title }}
+                </h3>
+
+
+                {% if assignment.deadline %}
+
+                <p>
+                    📅 Deadline:
+                    {{ assignment.deadline }}
+                </p>
+
+                {% endif %}
+
+
+                {% if assignment.hours %}
+
+                <p>
+                    ⏱️ Estimated:
+                    {{ assignment.hours }}
+                    hour(s)
+                </p>
+
+                {% endif %}
+
+
+                {% if assignment.importance %}
+
+                <p>
+                    🎯 Importance:
+                    {{ assignment.importance }}
+                </p>
+
+                {% endif %}
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+
+    <!-- ======================================
+         PRESENTATIONS FOUND
+    ======================================= -->
+
+    {% if result.presentations %}
+
+    <section>
+
+        <h2 class="section-title">
+            🎤 Presentations Identified
+        </h2>
+
+
+        <div class="cards">
+
+
+            {% for presentation in result.presentations %}
+
+
+            <div class="card data-card">
+
+
+                <h3>
+                    🎤 {{ presentation.topic }}
+                </h3>
+
+
+                {% if presentation.date %}
+
+                <p>
+                    📅 Date:
+                    {{ presentation.date }}
+                </p>
+
+                {% endif %}
+
+
+                {% if presentation.hours %}
+
+                <p>
+                    ⏱️ Preparation:
+                    {{ presentation.hours }}
+                    hour(s)
+                </p>
+
+                {% endif %}
+
+
+                {% if presentation.importance %}
+
+                <p>
+                    🎯 Importance:
+                    {{ presentation.importance }}
+                </p>
+
+                {% endif %}
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+
+    <!-- ======================================
+         CONFLICTS
+    ======================================= -->
+
+    <section>
+
+        <h2 class="section-title">
+            ⚠️ Detected Conflicts
+        </h2>
+
+
+        {% if conflicts %}
+
+
+        <div class="cards">
+
+
+            {% for conflict in conflicts %}
+
+
+            <div class="card conflict-card result-card">
+
+
+                <h3>
+                    ⚠️ {{ conflict.type }}
+                </h3>
+
+
+                <p>
+                    {{ conflict.message }}
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="card">
+
+            <h3>
+                ✅ No Conflicts Detected
+            </h3>
+
+            <p>
+                NEXUS did not detect any conflicts
+                from the current information.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ======================================
+         PRIORITIES
+    ======================================= -->
+
+    <section>
+
+        <h2 class="section-title">
+            🎯 AI Priorities
+        </h2>
+
+
+        {% if priorities %}
+
+
+        <div class="cards">
+
+
+            {% for priority in priorities %}
+
+
+            <div class="card priority-card result-card">
+
+
+                <h3>
+                    🎯 {{ priority.title }}
+                </h3>
+
+
+                {% if priority.deadline %}
+
+                <p>
+                    📅 Deadline:
+                    {{ priority.deadline }}
+                </p>
+
+                {% endif %}
+
+
+                {% if priority.hours %}
+
+                <p>
+                    ⏱️ Estimated:
+                    {{ priority.hours }}
+                    hour(s)
+                </p>
+
+                {% endif %}
+
+
+                {% if priority.importance %}
+
+                <p>
+                    ⭐ Importance:
+                    {{ priority.importance }}
+                </p>
+
+                {% endif %}
+
+
+                {% if priority.score %}
+
+                <p>
+                    📊 Priority Score:
+                    {{ priority.score }}
+                </p>
+
+                {% endif %}
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="card">
+
+            <p>
+                No priorities generated.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ======================================
+         ACTION PLAN
+    ======================================= -->
+
+    <section>
+
+        <h2 class="section-title">
+            🚀 AI Action Plan
+        </h2>
+
+
+        {% if action_plan %}
+
+
+        <div class="cards">
+
+
+            {% for action in action_plan %}
+
+
+            <div class="card action-card result-card">
+
+
+                <h3>
+                    ✅ Step {{ loop.index }}
+                </h3>
+
+
+                <p>
+                    {{ action }}
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="card">
+
+            <p>
+                No action plan generated.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ======================================
+         SAVED DATA
+    ======================================= -->
+
+    <section>
+
+        <h2 class="section-title">
+            📚 Your Saved Academic Data
+        </h2>
+
+
+        <div class="cards">
+
+
+            <div class="card">
+
+                <h3>
+                    📝 Assignments
+                </h3>
+
+                <p>
+                    {{ database_assignments|length }}
+                    assignment(s) saved.
+                </p>
+
+                <a href="/assignments"
+                   class="button">
+
+                    Manage Assignments
+
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    🎤 Presentations
+                </h3>
+
+                <p>
+                    {{ database_presentations|length }}
+                    presentation(s) saved.
+                </p>
+
+                <a href="/presentations"
+                   class="button">
+
+                    Manage Presentations
+
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    📅 Timetable
+                </h3>
+
+                <p>
+                    {{ database_classes|length }}
+                    class(es) saved.
+                </p>
+
+                <a href="/timetable"
+                   class="button">
+
+                    Manage Timetable
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         QUICK ACTIONS
+    ======================================= -->
+
+    <section class="card">
+
+        <h2>
+            ⚡ Next Steps
+        </h2>
+
+
+        <div class="quick-actions">
+
+
+            <a href="/schedule"
+               class="button">
+
+                📚 Study Schedule
+
+            </a>
+
+
+            <a href="/daily-plan"
+               class="button">
+
+                🤖 Daily Plan
+
+            </a>
+
+
+            <a href="/conflicts"
+               class="button">
+
+                ⚠️ Check Conflicts
+
+            </a>
+
+
+            <a href="/reminders"
+               class="button">
+
+                🔔 View Reminders
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+    {% endif %}
+
+
+
+    <!-- ======================================
+         BACK
+    ======================================= -->
+
+    <a href="/"
+       class="button">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</main>
+
+
+</body>
+
+</html>

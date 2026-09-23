@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS - Study Schedule</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =====================================
+           SCHEDULE PAGE
+        ===================================== */
+
+        .schedule-page {
+            padding: 30px;
+        }
+
+
+        .schedule-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        .schedule-title h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+
+        .schedule-title p {
+            opacity: 0.8;
+        }
+
+
+        /* =====================================
+           TIMELINE
+        ===================================== */
+
+        .timeline-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 18px;
+        }
+
+
+        .timeline {
+            display: grid;
+
+            grid-template-columns:
+                90px
+                repeat(5, minmax(180px, 1fr));
+
+            min-width: 1000px;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        .timeline-header {
+            padding: 18px 10px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            background: rgba(255,255,255,0.08);
+
+            border-right: 1px solid
+                rgba(255,255,255,0.1);
+        }
+
+
+        .timeline-header:first-child {
+            background: transparent;
+        }
+
+
+        /* =====================================
+           TIME COLUMN
+        ===================================== */
+
+        .time-column {
+            position: relative;
+        }
+
+
+        .time-slot {
+            height: 80px;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: center;
+
+            padding-top: 8px;
+
+            font-size: 13px;
+
+            opacity: 0.7;
+
+            border-bottom: 1px solid
+                rgba(255,255,255,0.08);
+        }
+
+
+        /* =====================================
+           DAY COLUMNS
+        ===================================== */
+
+        .day-column {
+            position: relative;
+
+            border-left: 1px solid
+                rgba(255,255,255,0.1);
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+
+        .hour-row {
+            height: 80px;
+
+            border-bottom: 1px solid
+                rgba(255,255,255,0.08);
+        }
+
+
+        /* =====================================
+           STUDY TASK
+        ===================================== */
+
+        .study-task {
+
+            margin: 6px;
+
+            padding: 10px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(80,150,255,0.9),
+                    rgba(130,70,255,0.9)
+                );
+
+            box-shadow:
+                0 5px 15px
+                rgba(0,0,0,0.25);
+
+            font-size: 13px;
+
+            position: absolute;
+
+            left: 4px;
+
+            right: 4px;
+
+            z-index: 5;
+        }
+
+
+        .study-task h3 {
+
+            margin: 0 0 5px 0;
+
+            font-size: 14px;
+
+        }
+
+
+        .study-task p {
+
+            margin: 3px 0;
+
+            font-size: 12px;
+
+        }
+
+
+        .task-type {
+
+            display: inline-block;
+
+            padding: 3px 7px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.2);
+
+            margin-bottom: 5px;
+
+        }
+
+
+        /* =====================================
+           EMPTY
+        ===================================== */
+
+        .empty-message {
+
+            text-align: center;
+
+            padding: 60px;
+
+        }
+
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 800px) {
+
+            .schedule-page {
+
+                padding: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        🧠 NEXUS
+
+    </div>
+
+
+    <nav>
+
+        <a href="/">Dashboard</a>
+
+        <a href="/timetable">Timetable</a>
+
+        <a href="/assignments">Assignments</a>
+
+        <a href="/presentations">
+            Presentations
+        </a>
+
+        <a href="/chaos">
+            Drop Your Chaos
+        </a>
+
+        <a href="/reminders">
+            Reminders
+        </a>
+
+        <a href="/conflicts">
+            Conflicts
+        </a>
+
+        <a href="/schedule">
+            📚 Study Schedule
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="schedule-page">
+
+
+    <div class="schedule-title">
+
+        <h1>
+            📚 AI Study Timeline
+        </h1>
+
+        <p>
+            NEXUS organizes your study time around
+            your college timetable.
+        </p>
+
+    </div>
+
+
+
+    {% if study_schedule %}
+
+
+    <div class="timeline-container">
+
+
+        <div class="timeline">
+
+
+            <!-- =================================
+                 HEADER
+            ================================== -->
+
+            <div class="timeline-header">
+                Time
+            </div>
+
+
+            <div class="timeline-header">
+                Monday
+            </div>
+
+
+            <div class="timeline-header">
+                Tuesday
+            </div>
+
+
+            <div class="timeline-header">
+                Wednesday
+            </div>
+
+
+            <div class="timeline-header">
+                Thursday
+            </div>
+
+
+            <div class="timeline-header">
+                Friday
+            </div>
+
+
+
+            <!-- =================================
+                 TIME COLUMN
+            ================================== -->
+
+            <div class="time-column">
+
+                {% for hour in range(9, 18) %}
+
+                <div class="time-slot">
+
+                    {{ "%02d:00"|format(hour) }}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <!-- =================================
+                 MONDAY
+            ================================== -->
+
+            <div class="day-column">
+
+                {% for hour in range(9, 18) %}
+
+                <div class="hour-row"></div>
+
+                {% endfor %}
+
+
+                {% for item in study_schedule %}
+
+                    {% if item.day == "Monday" %}
+
+                    <div class="study-task"
+                         style="
+                         top:
+                         {{ (item.start.split(':')[0]|int - 9) * 80
+                         + (item.start.split(':')[1]|int / 60) * 80 }}px;
+
+                         height:
+                         {{ item.hours * 80 }}px;
+                         ">
+
+                        <span class="task-type">
+
+                            {{ item.type }}
+
+                        </span>
+
+                        <h3>
+                            {{ item.task }}
+                        </h3>
+
+                        <p>
+
+                            ⏰
+
+                            {{ item.start }}
+
+                            -
+
+                            {{ item.end }}
+
+                        </p>
+
+                        <p>
+
+                            🎯
+                            {{ item.importance }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <!-- =================================
+                 TUESDAY
+            ================================== -->
+
+            <div class="day-column">
+
+                {% for hour in range(9, 18) %}
+
+                <div class="hour-row"></div>
+
+                {% endfor %}
+
+
+                {% for item in study_schedule %}
+
+                    {% if item.day == "Tuesday" %}
+
+                    <div class="study-task"
+                         style="
+                         top:
+                         {{ (item.start.split(':')[0]|int - 9) * 80
+                         + (item.start.split(':')[1]|int / 60) * 80 }}px;
+
+                         height:
+                         {{ item.hours * 80 }}px;
+                         ">
+
+                        <span class="task-type">
+
+                            {{ item.type }}
+
+                        </span>
+
+                        <h3>
+                            {{ item.task }}
+                        </h3>
+
+                        <p>
+
+                            ⏰
+                            {{ item.start }}
+                            -
+                            {{ item.end }}
+
+                        </p>
+
+                        <p>
+
+                            🎯
+                            {{ item.importance }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <!-- =================================
+                 WEDNESDAY
+            ================================== -->
+
+            <div class="day-column">
+
+                {% for hour in range(9, 18) %}
+
+                <div class="hour-row"></div>
+
+                {% endfor %}
+
+
+                {% for item in study_schedule %}
+
+                    {% if item.day == "Wednesday" %}
+
+                    <div class="study-task"
+                         style="
+                         top:
+                         {{ (item.start.split(':')[0]|int - 9) * 80
+                         + (item.start.split(':')[1]|int / 60) * 80 }}px;
+
+                         height:
+                         {{ item.hours * 80 }}px;
+                         ">
+
+                        <span class="task-type">
+
+                            {{ item.type }}
+
+                        </span>
+
+                        <h3>
+                            {{ item.task }}
+                        </h3>
+
+                        <p>
+
+                            ⏰
+                            {{ item.start }}
+                            -
+                            {{ item.end }}
+
+                        </p>
+
+                        <p>
+
+                            🎯
+                            {{ item.importance }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <!-- =================================
+                 THURSDAY
+            ================================== -->
+
+            <div class="day-column">
+
+                {% for hour in range(9, 18) %}
+
+                <div class="hour-row"></div>
+
+                {% endfor %}
+
+
+                {% for item in study_schedule %}
+
+                    {% if item.day == "Thursday" %}
+
+                    <div class="study-task"
+                         style="
+                         top:
+                         {{ (item.start.split(':')[0]|int - 9) * 80
+                         + (item.start.split(':')[1]|int / 60) * 80 }}px;
+
+                         height:
+                         {{ item.hours * 80 }}px;
+                         ">
+
+                        <span class="task-type">
+
+                            {{ item.type }}
+
+                        </span>
+
+                        <h3>
+                            {{ item.task }}
+                        </h3>
+
+                        <p>
+
+                            ⏰
+                            {{ item.start }}
+                            -
+                            {{ item.end }}
+
+                        </p>
+
+                        <p>
+
+                            🎯
+                            {{ item.importance }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <!-- =================================
+                 FRIDAY
+            ================================== -->
+
+            <div class="day-column">
+
+                {% for hour in range(9, 18) %}
+
+                <div class="hour-row"></div>
+
+                {% endfor %}
+
+
+                {% for item in study_schedule %}
+
+                    {% if item.day == "Friday" %}
+
+                    <div class="study-task"
+                         style="
+                         top:
+                         {{ (item.start.split(':')[0]|int - 9) * 80
+                         + (item.start.split(':')[1]|int / 60) * 80 }}px;
+
+                         height:
+                         {{ item.hours * 80 }}px;
+                         ">
+
+                        <span class="task-type">
+
+                            {{ item.type }}
+
+                        </span>
+
+                        <h3>
+                            {{ item.task }}
+                        </h3>
+
+                        <p>
+
+                            ⏰
+                            {{ item.start }}
+                            -
+                            {{ item.end }}
+
+                        </p>
+
+                        <p>
+
+                            🎯
+                            {{ item.importance }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="card empty-message">
+
+        <h2>
+            📭 No Study Schedule Yet
+        </h2>
+
+        <p>
+            Add your timetable, assignments
+            and presentations first.
+        </p>
+
+
+        <br>
+
+
+        <a href="/timetable"
+           class="button">
+
+            Add Timetable
+
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>

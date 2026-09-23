@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS - Assignments</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .status-box {
+
+            margin-top: 15px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.1);
+
+        }
+
+        .status-button {
+
+            border: none;
+
+            cursor: pointer;
+
+            margin: 4px;
+
+            padding: 9px 12px;
+
+            border-radius: 8px;
+
+            color: white;
+
+            background:
+                rgba(100,120,255,0.25);
+
+        }
+
+        .status-button:hover {
+
+            background:
+                rgba(100,120,255,0.45);
+
+        }
+
+        .delete-button {
+
+            border: none;
+
+            cursor: pointer;
+
+            margin-top: 12px;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            color: white;
+
+            background:
+                rgba(255,70,70,0.25);
+
+        }
+
+        .delete-button:hover {
+
+            background:
+                rgba(255,70,70,0.5);
+
+        }
+
+        .completed {
+
+            opacity: 0.65;
+
+        }
+
+        .status-label {
+
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(100,120,255,0.2);
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        🧠 NEXUS
+    </div>
+
+
+    <nav>
+
+        <a href="/">Dashboard</a>
+
+        <a href="/timetable">
+            📅 Timetable
+        </a>
+
+        <a href="/assignments">
+            📝 Assignments
+        </a>
+
+        <a href="/presentations">
+            🎤 Presentations
+        </a>
+
+        <a href="/chaos">
+            🧠 Drop Your Chaos
+        </a>
+
+        <a href="/reminders">
+            🔔 Reminders
+        </a>
+
+        <a href="/conflicts">
+            ⚠️ Conflicts
+        </a>
+
+        <a href="/schedule">
+            📚 Study Schedule
+        </a>
+
+        <a href="/daily-plan">
+            🤖 Daily Plan
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+
+    <section class="hero">
+
+        <h1>
+            📝 Assignments
+        </h1>
+
+        <p>
+            Add assignments and track their progress.
+        </p>
+
+    </section>
+
+
+    <!-- ADD ASSIGNMENT -->
+
+    <section class="card">
+
+        <h2>
+            ➕ Add Assignment
+        </h2>
+
+
+        <form method="POST">
+
+            <label>
+                Assignment Title
+            </label>
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Example: DBMS Assignment"
+                required
+            >
+
+
+            <label>
+                Subject
+            </label>
+
+            <input
+                type="text"
+                name="subject"
+                placeholder="Example: DBMS"
+                required
+            >
+
+
+            <label>
+                Deadline
+            </label>
+
+            <input
+                type="date"
+                name="deadline"
+                required
+            >
+
+
+            <label>
+                Estimated Hours
+            </label>
+
+            <input
+                type="number"
+                name="estimated_hours"
+                min="1"
+                placeholder="Example: 3"
+                required
+            >
+
+
+            <label>
+                Importance
+            </label>
+
+            <select
+                name="importance"
+                required
+            >
+
+                <option value="">
+                    Select Importance
+                </option>
+
+                <option value="High">
+                    High
+                </option>
+
+                <option value="Medium">
+                    Medium
+                </option>
+
+                <option value="Low">
+                    Low
+                </option>
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="button"
+            >
+
+                ➕ Add Assignment
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- ASSIGNMENTS -->
+
+    <section>
+
+        <h2>
+            📋 Your Assignments
+        </h2>
+
+
+        {% if assignments %}
+
+        <div class="cards">
+
+            {% for assignment in assignments %}
+
+            <div class="card
+                {% if assignment.status == 'Completed' %}
+                    completed
+                {% endif %}
+            ">
+
+                <h3>
+                    📝 {{ assignment.title }}
+                </h3>
+
+
+                <p>
+                    📚 Subject:
+                    {{ assignment.subject }}
+                </p>
+
+
+                <p>
+                    📅 Deadline:
+                    {{ assignment.deadline }}
+                </p>
+
+
+                <p>
+                    ⏱️ Estimated:
+                    {{ assignment.estimated_hours }}
+                    hour(s)
+                </p>
+
+
+                <p>
+                    🎯 Importance:
+                    {{ assignment.importance }}
+                </p>
+
+
+                <p>
+
+                    📊 Status:
+
+                    <span class="status-label">
+
+                        {% if assignment.status == "Completed" %}
+
+                            ✅ Completed
+
+                        {% elif assignment.status == "In Progress" %}
+
+                            🔄 In Progress
+
+                        {% else %}
+
+                            ⏳ Pending
+
+                        {% endif %}
+
+                    </span>
+
+                </p>
+
+
+                <!-- STATUS -->
+
+                <div class="status-box">
+
+                    <strong>
+                        Update Status:
+                    </strong>
+
+
+                    <form
+                        method="POST"
+                        action="/assignment-status/{{ assignment.id }}"
+                    >
+
+                        <button
+                            type="submit"
+                            name="status"
+                            value="Pending"
+                            class="status-button"
+                        >
+                            ⏳ Pending
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="status"
+                            value="In Progress"
+                            class="status-button"
+                        >
+                            🔄 In Progress
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="status"
+                            value="Completed"
+                            class="status-button"
+                        >
+                            ✅ Completed
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- DELETE -->
+
+                <form
+                    method="POST"
+                    action="/delete-assignment/{{ assignment.id }}"
+                    onsubmit="return confirm(
+                        'Are you sure you want to delete this assignment?'
+                    );"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                    >
+
+                        🗑️ Delete Assignment
+
+                    </button>
+
+                </form>
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="card empty-state">
+
+            <h3>
+                📭 No Assignments Added
+            </h3>
+
+            <p>
+                Add your first assignment above.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <section class="card">
+
+        <h2>
+            ⚡ Quick Actions
+        </h2>
+
+
+        <a href="/presentations"
+           class="button">
+
+            🎤 Presentations
+
+        </a>
+
+
+        <a href="/daily-plan"
+           class="button">
+
+            🤖 Daily Plan
+
+        </a>
+
+
+        <a href="/schedule"
+           class="button">
+
+            📚 Study Schedule
+
+        </a>
+
+
+        <a href="/reminders"
+           class="button">
+
+            🔔 Reminders
+
+        </a>
+
+    </section>
+
+
+    <a href="/"
+       class="button">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        NEXUS - Daily Action Plan
+    </title>
+
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='style.css'
+          ) }}">
+
+
+    <style>
+
+        /* ==================================
+           DAILY PLAN
+        ================================== */
+
+        .daily-container {
+
+            padding: 30px;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+        }
+
+
+        .daily-header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .daily-header h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .ai-summary {
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            margin-bottom: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(80,130,255,0.2),
+                    rgba(150,70,255,0.2)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+        }
+
+
+        .ai-summary h2 {
+
+            margin-top: 0;
+
+        }
+
+
+        /* ==================================
+           CONFLICT
+        ================================== */
+
+        .conflict-box {
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            margin-bottom: 25px;
+
+            background:
+                rgba(255,80,80,0.12);
+
+            border-left:
+                5px solid
+                #ff5757;
+
+        }
+
+
+        /* ==================================
+           TASK CARDS
+        ================================== */
+
+        .daily-task {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 22px;
+
+            margin-bottom: 15px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+        }
+
+
+        .daily-task h3 {
+
+            margin: 0 0 8px 0;
+
+        }
+
+
+        .task-info p {
+
+            margin: 5px 0;
+
+            opacity: 0.8;
+
+        }
+
+
+        .priority-badge {
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+        }
+
+
+        .top {
+
+            background:
+                rgba(255,70,70,0.2);
+
+        }
+
+
+        .next {
+
+            background:
+                rgba(255,180,50,0.2);
+
+        }
+
+
+        .later {
+
+            background:
+                rgba(80,160,255,0.2);
+
+        }
+
+
+        /* ==================================
+           EMPTY
+        ================================== */
+
+        .empty-plan {
+
+            text-align: center;
+
+            padding: 50px;
+
+        }
+
+
+        /* ==================================
+           MOBILE
+        ================================== */
+
+        @media (max-width: 700px) {
+
+            .daily-container {
+
+                padding: 15px;
+
+            }
+
+
+            .daily-task {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     NAVBAR
+====================================== -->
+
+<header class="navbar">
+
+
+    <div class="logo">
+
+        🧠 NEXUS
+
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+
+        <a href="/timetable">
+            Timetable
+        </a>
+
+
+        <a href="/assignments">
+            Assignments
+        </a>
+
+
+        <a href="/presentations">
+            Presentations
+        </a>
+
+
+        <a href="/chaos">
+            Drop Your Chaos
+        </a>
+
+
+        <a href="/reminders">
+            Reminders
+        </a>
+
+
+        <a href="/conflicts">
+            Conflicts
+        </a>
+
+
+        <a href="/schedule">
+            📚 Study Schedule
+        </a>
+
+
+        <a href="/daily-plan">
+            🤖 Daily Plan
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================
+     MAIN
+====================================== -->
+
+<main class="daily-container">
+
+
+    <div class="daily-header">
+
+        <h1>
+            🤖 AI Daily Action Plan
+        </h1>
+
+
+        <p>
+
+            NEXUS analyzes your academic workload
+            and tells you what to focus on first.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- ==================================
+         AI SUMMARY
+    ================================== -->
+
+    <section class="ai-summary">
+
+        <h2>
+            🧠 NEXUS Recommendation
+        </h2>
+
+
+        <p>
+
+            {{ daily_plan.summary }}
+
+        </p>
+
+    </section>
+
+
+
+    <!-- ==================================
+         CONFLICT MESSAGE
+    ================================== -->
+
+    {% if daily_plan.conflict_count > 0 %}
+
+    <div class="conflict-box">
+
+        <strong>
+            {{ daily_plan.conflict_message }}
+        </strong>
+
+
+        <p>
+
+            Check the
+            <a href="/conflicts">
+                Conflicts
+            </a>
+            page for details.
+
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="ai-summary">
+
+        ✅
+
+        {{ daily_plan.conflict_message }}
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- ==================================
+         TASKS
+    ================================== -->
+
+    {% if daily_plan.tasks %}
+
+
+        {% for task in daily_plan.tasks %}
+
+
+        <div class="daily-task">
+
+
+            <div class="task-info">
+
+
+                <h3>
+
+                    {% if task.type == "Assignment" %}
+
+                        📝
+
+                    {% else %}
+
+                        🎤
+
+                    {% endif %}
+
+
+                    {{ task.title }}
+
+                </h3>
+
+
+                <p>
+
+                    📌
+
+                    {{ task.type }}
+
+                </p>
+
+
+                <p>
+
+                    📅
+
+                    Deadline:
+
+                    {{ task.deadline }}
+
+                </p>
+
+
+                <p>
+
+                    ⏱️
+
+                    Required:
+
+                    {{ task.hours }}
+                    hour(s)
+
+                </p>
+
+
+                <p>
+
+                    🎯
+
+                    Importance:
+
+                    {{ task.importance }}
+
+                </p>
+
+
+                <p>
+
+                    👉
+
+                    {{ task.action }}
+
+                </p>
+
+
+            </div>
+
+
+
+            <div>
+
+                <span class="priority-badge
+                    {{ task.priority|lower }}">
+
+                    {% if task.priority == "TOP" %}
+
+                        🔴 TOP PRIORITY
+
+                    {% elif task.priority == "NEXT" %}
+
+                        🟠 NEXT
+
+                    {% else %}
+
+                        🔵 LATER
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    {% else %}
+
+
+        <div class="empty-plan">
+
+            <h2>
+                📭 No Tasks
+            </h2>
+
+
+            <p>
+
+                Add assignments or presentations
+                to generate your AI action plan.
+
+            </p>
+
+
+            <br>
+
+
+            <a href="/assignments"
+               class="button">
+
+                Add Assignment
+
+            </a>
+
+
+            <a href="/presentations"
+               class="button">
+
+                Add Presentation
+
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>
