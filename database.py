@@ -1,101 +1,296 @@
+import os
 import sqlite3
 
 
-DATABASE = "database.db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+
+class DBConnection:
+
+    def __init__(self):
+
+        self.postgres = bool(DATABASE_URL)
+
+        if self.postgres:
+
+            import psycopg
+            from psycopg.rows import dict_row
+
+            url = DATABASE_URL
+
+            if url.startswith("postgres://"):
+                url = url.replace(
+                    "postgres://",
+                    "postgresql://",
+                    1
+                )
+
+            self.connection = psycopg.connect(
+                url,
+                row_factory=dict_row
+            )
+
+        else:
+
+            self.connection = sqlite3.connect(
+                "database.db"
+            )
+
+            self.connection.row_factory = sqlite3.Row
+
+    def execute(self, sql, params=()):
+
+        if self.postgres:
+            sql = sql.replace("?", "%s")
+
+        return self.connection.execute(
+            sql,
+            params
+        )
+
+    def commit(self):
+        self.connection.commit()
+
+    def rollback(self):
+        self.connection.rollback()
+
+    def close(self):
+        self.connection.close()
 
 
 def get_db_connection():
-
-    connection = sqlite3.connect(DATABASE)
-
-    connection.row_factory = sqlite3.Row
-
-    return connection
+    return DBConnection()
 
 
 def create_tables():
 
     connection = get_db_connection()
 
-
     # ==========================================
-    # 1. TIMETABLE TABLE
-    # ==========================================
-
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS timetable (
-
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-            subject TEXT NOT NULL,
-
-            day TEXT NOT NULL,
-
-            start_time TEXT NOT NULL,
-
-            end_time TEXT NOT NULL,
-
-            room TEXT
-
-        )
-    """)
-
-
-    # ==========================================
-    # 2. ASSIGNMENTS TABLE
+    # USERS TABLE
     # ==========================================
 
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS assignments (
+    if connection.postgres:
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS users (
 
-            title TEXT NOT NULL,
+                id SERIAL PRIMARY KEY,
 
-            subject TEXT NOT NULL,
+                name TEXT NOT NULL,
 
-            deadline TEXT NOT NULL,
+                email TEXT NOT NULL UNIQUE,
 
-            estimated_hours INTEGER NOT NULL,
+                password_hash TEXT NOT NULL,
 
-            importance TEXT NOT NULL,
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
 
-            status TEXT DEFAULT 'Pending'
+            )
+        """)
 
-        )
-    """)
+    else:
 
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+                name TEXT NOT NULL,
+
+                email TEXT NOT NULL UNIQUE,
+
+                password_hash TEXT NOT NULL,
+
+                created_at TEXT
+                    DEFAULT CURRENT_TIMESTAMP
+
+            )
+        """)
 
     # ==========================================
-    # 3. PRESENTATIONS TABLE
+    # TIMETABLE TABLE
     # ==========================================
 
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS presentations (
+    if connection.postgres:
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS timetable (
 
-            topic TEXT NOT NULL,
+                id SERIAL PRIMARY KEY,
 
-            subject TEXT NOT NULL,
+                user_id INTEGER NOT NULL,
 
-            presentation_date TEXT NOT NULL,
+                subject TEXT NOT NULL,
 
-            preparation_hours INTEGER NOT NULL,
+                day TEXT NOT NULL,
 
-            importance TEXT NOT NULL,
+                start_time TEXT NOT NULL,
 
-            status TEXT DEFAULT 'Planned'
+                end_time TEXT NOT NULL,
 
-        )
-    """)
+                room TEXT,
 
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
 
-    # Save changes
+            )
+        """)
+
+    else:
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS timetable (
+
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+                user_id INTEGER NOT NULL,
+
+                subject TEXT NOT NULL,
+
+                day TEXT NOT NULL,
+
+                start_time TEXT NOT NULL,
+
+                end_time TEXT NOT NULL,
+
+                room TEXT,
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
+
+            )
+        """)
+
+    # ==========================================
+    # ASSIGNMENTS TABLE
+    # ==========================================
+
+    if connection.postgres:
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS assignments (
+
+                id SERIAL PRIMARY KEY,
+
+                user_id INTEGER NOT NULL,
+
+                title TEXT NOT NULL,
+
+                subject TEXT NOT NULL,
+
+                deadline TEXT NOT NULL,
+
+                estimated_hours INTEGER NOT NULL,
+
+                importance TEXT NOT NULL,
+
+                status TEXT DEFAULT 'Pending',
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
+
+            )
+        """)
+
+    else:
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS assignments (
+
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+                user_id INTEGER NOT NULL,
+
+                title TEXT NOT NULL,
+
+                subject TEXT NOT NULL,
+
+                deadline TEXT NOT NULL,
+
+                estimated_hours INTEGER NOT NULL,
+
+                importance TEXT NOT NULL,
+
+                status TEXT DEFAULT 'Pending',
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
+
+            )
+        """)
+
+    # ==========================================
+    # PRESENTATIONS TABLE
+    # ==========================================
+
+    if connection.postgres:
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS presentations (
+
+                id SERIAL PRIMARY KEY,
+
+                user_id INTEGER NOT NULL,
+
+                topic TEXT NOT NULL,
+
+                subject TEXT NOT NULL,
+
+                presentation_date TEXT NOT NULL,
+
+                preparation_hours INTEGER NOT NULL,
+
+                importance TEXT NOT NULL,
+
+                status TEXT DEFAULT 'Planned',
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
+
+            )
+        """)
+
+    else:
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS presentations (
+
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+                user_id INTEGER NOT NULL,
+
+                topic TEXT NOT NULL,
+
+                subject TEXT NOT NULL,
+
+                presentation_date TEXT NOT NULL,
+
+                preparation_hours INTEGER NOT NULL,
+
+                importance TEXT NOT NULL,
+
+                status TEXT DEFAULT 'Planned',
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(id)
+                    ON DELETE CASCADE
+
+            )
+        """)
 
     connection.commit()
 
-
-    # Close database connection
-
     connection.close()
+
+
+if __name__ == "__main__":
+
+    create_tables()
+
+    print("NEXUS database tables created successfully.")

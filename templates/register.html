@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS - Create Account</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #fff4fb;
+
+            background-color: #0a0308;
+
+            background-image:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(255, 0, 120, 0.18),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(160, 0, 220, 0.15),
+                    transparent 40%
+                ),
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(200, 0, 120, 0.12),
+                    transparent 40%
+                );
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .register-box {
+            width: 100%;
+            max-width: 430px;
+            padding: 38px;
+            border-radius: 20px;
+
+            background: rgba(28, 10, 25, 0.88);
+
+            border: 1px solid rgba(255, 72, 164, 0.45);
+
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, 0.45),
+                0 0 30px rgba(255, 63, 159, 0.08);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #ffffff;
+
+            text-shadow:
+                0 0 15px rgba(255, 63, 159, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 30px;
+
+            color: #ffb7dc;
+            font-size: 16px;
+        }
+
+        .register-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #fff4fb;
+        }
+
+        .register-box form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-box label {
+            margin-bottom: 8px;
+            color: #fff4fb;
+            font-weight: 600;
+        }
+
+        .register-box input {
+            width: 100%;
+            padding: 13px 15px;
+            margin-bottom: 18px;
+
+            border-radius: 9px;
+            border: 1px solid rgba(255, 72, 164, 0.35);
+
+            background: rgba(255, 255, 255, 0.07);
+
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .register-box input:focus {
+            border-color: #ff3f9f;
+
+            box-shadow:
+                0 0 0 2px rgba(255, 63, 159, 0.12);
+        }
+
+        .register-box input::placeholder {
+            color: #927d8f;
+        }
+
+        .register-box button {
+            width: 100%;
+            padding: 13px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: linear-gradient(
+                90deg,
+                #ff3f9f,
+                #a84cff
+            );
+
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .register-box button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 20px rgba(255, 63, 159, 0.25);
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 20px;
+            color: #cbb6c7;
+        }
+
+        .login a {
+            color: #ff72bc;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .login a:hover {
+            color: #ffffff;
+        }
+
+        .flash-message {
+            padding: 10px 12px;
+            margin-bottom: 18px;
+
+            border-radius: 8px;
+
+            background: rgba(255, 63, 159, 0.12);
+            border: 1px solid rgba(255, 63, 159, 0.3);
+
+            color: #ffd9ed;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            .register-box {
+                padding: 28px 22px;
+            }
+
+            .logo {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="register-box">
+
+        <div class="logo">
+            NEXUS
+        </div>
+
+        <div class="subtitle">
+            AI Decision & Action Agent
+        </div>
+
+        <h2>
+            Create Account
+        </h2>
+
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="flash-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+        {% endwith %}
+
+
+        <form method="POST"
+              action="{{ url_for('register') }}">
+
+            <label>
+                Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                required
+            >
+
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Minimum 6 characters"
+                minlength="6"
+                required
+            >
+
+
+            <label>
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                minlength="6"
+                required
+            >
+
+
+            <button type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="login">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
